@@ -27,8 +27,11 @@ def generate_gogeta_reply(prompt):
     }
     try:
         res = requests.post("https://openrouter.ai/api/v1/chat/completions", headers=headers, json=data)
+        res.raise_for_status()
         return res.json()["choices"][0]["message"]["content"]
     except Exception as e:
+        print("API ERROR:", e)
+        print("Response:", res.text if 'res' in locals() else "No response.")
         return "Something went wrong with my thoughts... try again later."
 
 @bot.event
